@@ -1,21 +1,55 @@
-// use prisma-8
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+generator client {
+  provider = "prisma-client-js"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+datasource db {
+  provider = "postgresql"
+}
+
+enum Size {
+  small
+  medium
+  large
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  name        String
+  images      Image[]
+  size        Size     @default(small)
+  description String   @default("")
+  color       String   @default("Standard")
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id      String @id @default(uuid())
+  imgName String
+  itemId  String
+  item    Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  username     String?
+  name         String?
+  passwordHash String?
+  items        Item[]
+  sessions     Session[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
 }

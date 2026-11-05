@@ -12,10 +12,10 @@ async function runSeed(): Promise<void> {
   await connectDatabase();
 
   for (const user of users) {
-    await db.orm.public.User.upsert({
+    await db.user.upsert({
       create: user,
       update: {},
-      conflictOn: { email: user.email },
+      where: { email: user.email },
     });
   }
 }

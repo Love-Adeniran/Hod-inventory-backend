@@ -7,43 +7,33 @@
     "node": "^22.18.0 || >=24.11.0"
   },
   "scripts": {
-    "build": "tsdown",
-    "composer:deploy": "prisma deploy module.ts",
-    "composer:dev": "prisma dev module.ts",
-    "contract:emit": "prisma contract emit",
-    "db:init": "prisma db init",
-    "db:update": "prisma db update",
-    "db:verify": "prisma db verify",
-    "deploy": "npm run build && npm run composer:deploy",
+    "build": "prisma generate && nest build",
     "dev": "tsx watch src/main.ts",
-    "dev:composer": "npm run build && npm run composer:dev",
-    "migrate": "prisma db migrate",
-    "migration:plan": "prisma migration plan",
-    "migration:show": "prisma migration show",
-    "migration:status": "prisma migration status",
-    "start": "node dist/server.mjs"
+    "start": "node dist/main.js",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.17",
     "@nestjs/core": "^11.1.17",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.17",
-    "@prisma/composer": "0.20.0",
-    "@prisma/composer-prisma-cloud": "0.20.0",
-    "@prisma/orm-postgres": "8.0.0-rc.11",
-    "alchemy": "2.0.0-beta.74",
+    "@nestjs/swagger": "^11.4.7",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^18.0.4",
+    "pg": "^8.23.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "temporal-polyfill": "^1.0.4"
   },
   "devDependencies": {
-    "@prisma/dev": "0.25.2",
-    "@types/node": "^25.6.2",
-    "prisma": "8.0.0-rc.15",
-    "tsdown": "^0.22.14",
+    "@types/node": "^25.9.8",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
-  },
-  "overrides": {
-    "effect": "4.0.0-rc.112"
   }
 }
