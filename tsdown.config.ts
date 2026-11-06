@@ -1,9 +1,10 @@
 import { isBuiltin } from "node:module";
 import { defineConfig } from "tsdown";
 
-const optionalNestDependencies = [
+const externalizedDependencies = [
   /^@nestjs\/microservices(?:\/|$)/,
   /^@nestjs\/platform-socket\.io(?:\/|$)/,
+  /^@nestjs\/swagger(?:\/|$)/,
   /^@nestjs\/websockets(?:\/|$)/,
   /^class-transformer(?:\/|$)/,
   /^class-validator(?:\/|$)/,
@@ -23,7 +24,7 @@ export default defineConfig({
     onlyBundle: false,
     alwaysBundle: (id) =>
       !isBuiltin(id) &&
-      !optionalNestDependencies.some((pattern) => pattern.test(id)),
-    neverBundle: optionalNestDependencies,
+      !externalizedDependencies.some((pattern) => pattern.test(id)),
+    neverBundle: externalizedDependencies,
   },
 });
