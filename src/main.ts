@@ -10,8 +10,9 @@ async function bootstrap() {
 
     // Enable CORS for frontend applications
     app.enableCors({
-        origin: ['https://hod-inventory-frontend.vercel.app','http://localhost:5173', 'http://localhost:3000', ], // Vite React default is 5173
+        origin: ['https://hod-inventory-frontend.vercel.app', 'http://localhost:5173', 'http://localhost:3000'], // Vite React default is 5173
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
     });
 
