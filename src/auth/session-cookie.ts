@@ -1,5 +1,11 @@
 export const SESSION_COOKIE_NAME = 'inventory_session';
 
+function getSessionCookieAttributes(): string {
+    return process.env.NODE_ENV === 'production'
+        ? '; HttpOnly; SameSite=None; Secure; Path=/'
+        : '; HttpOnly; SameSite=Strict; Path=/';
+}
+
 export function readSessionCookie(cookieHeader?: string): string | undefined {
     const cookie = cookieHeader
         ?.split(';')
@@ -10,11 +16,9 @@ export function readSessionCookie(cookieHeader?: string): string | undefined {
 }
 
 export function createSessionCookie(token: string): string {
-    const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
-    return `${SESSION_COOKIE_NAME}=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=604800${secure}`;
+    return `${SESSION_COOKIE_NAME}=${token}${getSessionCookieAttributes()}; Max-Age=604800`;
 }
 
 export function clearSessionCookie(): string {
-    const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
-    return `${SESSION_COOKIE_NAME}=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${secure}`;
+    return `${SESSION_COOKIE_NAME}=${getSessionCookieAttributes()}; Max-Age=0`;
 }
